@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Trophy } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -27,6 +27,21 @@ export function Header() {
           </div>
         </Link>
         <div className="flex items-center gap-2">
+          <Link
+            to="/leaderboard"
+            className="hidden sm:inline-flex h-9 items-center gap-1.5 rounded-md border border-border bg-card px-3 text-sm font-medium hover:bg-accent transition-colors"
+            aria-label="Лидерборд"
+          >
+            <Trophy className="h-4 w-4 text-amber-500" />
+            <span>Топ</span>
+          </Link>
+          <Link
+            to="/leaderboard"
+            className="sm:hidden inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-card hover:bg-accent transition-colors"
+            aria-label="Лидерборд"
+          >
+            <Trophy className="h-4 w-4 text-amber-500" />
+          </Link>
           <Select value={language} onValueChange={(v) => setLanguage(v as Language)}>
             <SelectTrigger className="h-9 w-[88px] sm:w-[120px]" aria-label={t("language")}>
               <SelectValue />
