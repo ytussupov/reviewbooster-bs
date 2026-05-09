@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Header } from "@/components/Header";
 import { ReviewForm } from "@/components/ReviewForm";
 import { ArrowLeft, Sparkles, Star } from "lucide-react";
+import { useSettings } from "@/lib/settings";
 
 export const Route = createFileRoute("/products/$productId")({
   component: ProductPage,
@@ -29,6 +30,7 @@ type Review = {
 
 function ProductPage() {
   const { productId } = useParams({ from: "/products/$productId" });
+  const { t, formatBonus } = useSettings();
   const [product, setProduct] = useState<Product | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
@@ -74,9 +76,9 @@ function ProductPage() {
       <div>
         <Header />
         <div className="mx-auto max-w-3xl px-4 py-20 text-center">
-          <h1 className="font-display text-3xl font-bold">Товар не найден</h1>
+          <h1 className="font-display text-3xl font-bold">{t("product_not_found")}</h1>
           <Link to="/" className="mt-4 inline-block text-primary">
-            ← В каталог
+            {t("to_catalog")}
           </Link>
         </div>
       </div>
@@ -96,7 +98,7 @@ function ProductPage() {
           to="/"
           className="mb-6 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
         >
-          <ArrowLeft className="h-4 w-4" /> К каталогу
+          <ArrowLeft className="h-4 w-4" /> {t("back_catalog")}
         </Link>
 
         <div className="grid gap-8 lg:grid-cols-2">
@@ -140,7 +142,7 @@ function ProductPage() {
                   </span>
                 </div>
                 <div className="text-muted-foreground">
-                  {reviews.length} отзыв(ов)
+                  {reviews.length} {t("reviews_count")}
                 </div>
               </div>
             </div>
@@ -155,11 +157,11 @@ function ProductPage() {
 
         <section className="mt-14">
           <h2 className="mb-5 font-display text-2xl font-bold">
-            Отзывы ({reviews.length})
+            {t("reviews")} ({reviews.length})
           </h2>
           {reviews.length === 0 ? (
             <div className="rounded-2xl border border-dashed border-border p-10 text-center text-muted-foreground">
-              Пока никто не оставлял отзыв. Будьте первым и получите бонус!
+              {t("no_reviews")}
             </div>
           ) : (
             <div className="space-y-4">
@@ -192,7 +194,7 @@ function ProductPage() {
                     <div className="flex items-center gap-2">
                       {r.bonus_amount > 0 && (
                         <span className="rounded-full bg-gradient-coupon px-3 py-1 text-xs font-bold text-primary-foreground shadow-glow">
-                          +{r.bonus_amount} ₽
+                          +{formatBonus(r.bonus_amount)}
                         </span>
                       )}
                       <span className="rounded-full bg-muted px-2 py-1 text-xs text-muted-foreground">

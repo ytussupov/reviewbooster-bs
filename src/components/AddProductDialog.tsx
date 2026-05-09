@@ -14,8 +14,10 @@ import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Plus } from "lucide-react";
+import { useSettings } from "@/lib/settings";
 
 export function AddProductDialog({ onCreated }: { onCreated: () => void }) {
+  const { t } = useSettings();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
@@ -24,7 +26,7 @@ export function AddProductDialog({ onCreated }: { onCreated: () => void }) {
 
   const submit = async () => {
     if (name.trim().length < 2) {
-      toast.error("Укажите название товара");
+      toast.error(t("enter_name"));
       return;
     }
     setLoading(true);
@@ -35,10 +37,10 @@ export function AddProductDialog({ onCreated }: { onCreated: () => void }) {
     });
     setLoading(false);
     if (error) {
-      toast.error("Не удалось добавить товар");
+      toast.error(t("product_add_fail"));
       return;
     }
-    toast.success("Товар добавлен");
+    toast.success(t("product_added"));
     setName("");
     setDescription("");
     setImageUrl("");
@@ -51,38 +53,36 @@ export function AddProductDialog({ onCreated }: { onCreated: () => void }) {
       <DialogTrigger asChild>
         <Button size="lg" className="gap-2 shadow-glow">
           <Plus className="h-4 w-4" />
-          Добавить товар
+          {t("add_product")}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="font-display text-2xl">
-            Новый товар
-          </DialogTitle>
+          <DialogTitle className="font-display text-2xl">{t("new_product")}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="name">Название *</Label>
+            <Label htmlFor="name">{t("name_required")}</Label>
             <Input
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Например, Кроссовки Atlas Pro"
+              placeholder={t("name_ph")}
               maxLength={120}
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="desc">Описание</Label>
+            <Label htmlFor="desc">{t("description")}</Label>
             <Textarea
               id="desc"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Короткое описание товара"
+              placeholder={t("desc_ph")}
               maxLength={500}
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="img">Ссылка на картинку</Label>
+            <Label htmlFor="img">{t("image_link")}</Label>
             <Input
               id="img"
               value={imageUrl}
@@ -93,7 +93,7 @@ export function AddProductDialog({ onCreated }: { onCreated: () => void }) {
         </div>
         <DialogFooter>
           <Button onClick={submit} disabled={loading} className="w-full">
-            {loading ? "Добавляю..." : "Добавить"}
+            {loading ? t("adding") : t("add")}
           </Button>
         </DialogFooter>
       </DialogContent>
