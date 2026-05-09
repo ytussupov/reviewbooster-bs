@@ -23,12 +23,15 @@ export const Route = createFileRoute("/api/public/evaluate-review")({
             author_name?: string;
             content?: string;
             product_name?: string;
+            language?: "ru" | "kk" | "en";
           };
 
           const product_id = (body.product_id || "").trim();
           const author_name = (body.author_name || "").trim().slice(0, 60);
           const content = (body.content || "").trim().slice(0, 2000);
           const product_name = (body.product_name || "товар").slice(0, 200);
+          const language = body.language === "kk" || body.language === "en" ? body.language : "ru";
+          const langName = language === "ru" ? "русском" : language === "kk" ? "казахском" : "английском";
 
           if (!product_id || !author_name || content.length < 5) {
             return Response.json(
@@ -56,7 +59,7 @@ export const Route = createFileRoute("/api/public/evaluate-review")({
                   {
                     role: "system",
                     content:
-                      "Ты модератор отзывов. Оценивай отзыв о товаре по полезности, конкретике, конструктивности и подробности. Отвечай ТОЛЬКО через вызов функции evaluate_review. Шкала quality_score: 0-100. rating 1-5 — твоя оценка тональности отзыва (1 — крайне негативный, 5 — крайне позитивный). bonus_amount в рублях по правилу: <40→0, 40-59→100, 60-79→250, 80-89→500, 90+→1000. feedback — короткий комментарий автору на русском (1-2 предложения), что хорошо/что улучшить.",
+                      `Ты модератор отзывов. Оценивай отзыв о товаре по полезности, конкретике, конструктивности и подробности. Отвечай ТОЛЬКО через вызов функции evaluate_review. Шкала quality_score: 0-100. rating 1-5 — твоя оценка тональности отзыва (1 — крайне негативный, 5 — крайне позитивный). bonus_amount в рублях по правилу: <40→0, 40-59→100, 60-79→250, 80-89→500, 90+→1000. feedback — короткий комментарий автору на ${langName} языке (1-2 предложения), что хорошо/что улучшить.`,
                   },
                   {
                     role: "user",

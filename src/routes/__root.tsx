@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-router";
 
 import { Toaster } from "@/components/ui/sonner";
+import { SettingsProvider } from "@/lib/settings";
 
 import appCss from "../styles.css?url";
 
@@ -120,8 +121,10 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
-      <Toaster richColors position="top-center" />
+      <SettingsProvider>
+        <Outlet />
+        <Toaster richColors position="top-center" />
+      </SettingsProvider>
     </QueryClientProvider>
   );
 }
