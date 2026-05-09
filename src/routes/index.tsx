@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Header } from "@/components/Header";
 import { AddProductDialog } from "@/components/AddProductDialog";
 import { Sparkles, Gift, Zap, MessageSquare } from "lucide-react";
+import { useSettings } from "@/lib/settings";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -27,6 +28,7 @@ type Product = {
 };
 
 function Index() {
+  const { t, formatBonus } = useSettings();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -61,26 +63,25 @@ function Index() {
         />
         <div className="relative mx-auto max-w-6xl px-4 py-20 text-center text-primary-foreground">
           <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-1.5 text-xs font-medium uppercase tracking-widest backdrop-blur">
-            <Sparkles className="h-3 w-3" /> AI оценивает за 5 секунд
+            <Sparkles className="h-3 w-3" /> {t("hero_badge")}
           </div>
           <h1 className="mx-auto max-w-3xl font-display text-5xl font-bold leading-[1.05] sm:text-6xl">
-            Бонусы за отзывы,
+            {t("hero_title_1")}
             <br />
-            которые правда полезны
+            {t("hero_title_2")}
           </h1>
           <p className="mx-auto mt-5 max-w-xl text-lg opacity-90">
-            Подробнее, конкретнее, конструктивнее — больше бонус. Никаких модераторов,
-            всё считает искусственный интеллект.
+            {t("hero_sub")}
           </p>
 
           <div className="mx-auto mt-10 grid max-w-3xl grid-cols-1 gap-3 sm:grid-cols-3">
             {[
-              { icon: Zap, t: "5 сек", s: "AI-проверка" },
-              { icon: Gift, t: "до 1000 ₽", s: "купон сразу" },
-              { icon: MessageSquare, t: "0 модерации", s: "автоматически" },
+              { icon: Zap, t: "5 sec", s: t("badge_ai_check") },
+              { icon: Gift, t: `${t("badge_up_to")} ${formatBonus(1000)}`, s: t("badge_coupon") },
+              { icon: MessageSquare, t: "0", s: t("badge_no_mod") },
             ].map((b) => (
               <div
-                key={b.t}
+                key={b.s}
                 className="flex items-center gap-3 rounded-2xl border border-white/20 bg-white/10 p-4 backdrop-blur"
               >
                 <b.icon className="h-6 w-6" />
@@ -100,9 +101,9 @@ function Index() {
       <section className="mx-auto max-w-6xl px-4 py-14">
         <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h2 className="font-display text-3xl font-bold">Каталог</h2>
+            <h2 className="font-display text-3xl font-bold">{t("catalog")}</h2>
             <p className="text-muted-foreground">
-              Выберите товар и оставьте отзыв — бонус прилетит сразу.
+              {t("catalog_sub")}
             </p>
           </div>
           <AddProductDialog onCreated={load} />
@@ -119,9 +120,7 @@ function Index() {
           </div>
         ) : products.length === 0 ? (
           <div className="rounded-3xl border border-dashed border-border p-12 text-center">
-            <p className="text-muted-foreground">
-              Пока нет товаров. Добавьте первый!
-            </p>
+            <p className="text-muted-foreground">{t("empty_products")}</p>
           </div>
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -153,7 +152,7 @@ function Index() {
                     </p>
                   )}
                   <div className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary">
-                    Оставить отзыв →
+                    {t("leave_review")}
                   </div>
                 </div>
               </Link>
@@ -163,7 +162,7 @@ function Index() {
       </section>
 
       <footer className="border-t border-border py-8 text-center text-sm text-muted-foreground">
-        Review Booster · бонусы за честные отзывы
+        {t("footer")}
       </footer>
     </div>
   );
