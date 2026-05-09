@@ -25,8 +25,8 @@ export function ReviewForm({
   productName: string;
   onSubmitted: () => void;
 }) {
-  const { t, language, formatBonus } = useSettings();
-  const [name, setName] = useState("");
+  const { t, language, formatBonus, playerName, setPlayerName } = useSettings();
+  const [name, setName] = useState(playerName);
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<EvalReview | null>(null);
@@ -62,7 +62,9 @@ export function ReviewForm({
         coupon_code: r.coupon_code,
         ai_feedback: r.ai_feedback,
       });
-      setName("");
+      setPlayerName(name.trim());
+      if (r.quality_score >= 90) toast.success(`🏆 +${r.quality_score} очков! Перфекционист!`);
+      else if (r.bonus_amount > 0) toast.success(`+${r.quality_score} очков и бонус!`);
       setContent("");
       onSubmitted();
     } catch (e) {

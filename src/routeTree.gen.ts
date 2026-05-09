@@ -9,10 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LeaderboardRouteImport } from './routes/leaderboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductsProductIdRouteImport } from './routes/products.$productId'
 import { Route as ApiPublicEvaluateReviewRouteImport } from './routes/api/public/evaluate-review'
 
+const LeaderboardRoute = LeaderboardRouteImport.update({
+  id: '/leaderboard',
+  path: '/leaderboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -31,36 +37,60 @@ const ApiPublicEvaluateReviewRoute = ApiPublicEvaluateReviewRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/leaderboard': typeof LeaderboardRoute
   '/products/$productId': typeof ProductsProductIdRoute
   '/api/public/evaluate-review': typeof ApiPublicEvaluateReviewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/leaderboard': typeof LeaderboardRoute
   '/products/$productId': typeof ProductsProductIdRoute
   '/api/public/evaluate-review': typeof ApiPublicEvaluateReviewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/leaderboard': typeof LeaderboardRoute
   '/products/$productId': typeof ProductsProductIdRoute
   '/api/public/evaluate-review': typeof ApiPublicEvaluateReviewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/products/$productId' | '/api/public/evaluate-review'
+  fullPaths:
+    | '/'
+    | '/leaderboard'
+    | '/products/$productId'
+    | '/api/public/evaluate-review'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/products/$productId' | '/api/public/evaluate-review'
-  id: '__root__' | '/' | '/products/$productId' | '/api/public/evaluate-review'
+  to:
+    | '/'
+    | '/leaderboard'
+    | '/products/$productId'
+    | '/api/public/evaluate-review'
+  id:
+    | '__root__'
+    | '/'
+    | '/leaderboard'
+    | '/products/$productId'
+    | '/api/public/evaluate-review'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LeaderboardRoute: typeof LeaderboardRoute
   ProductsProductIdRoute: typeof ProductsProductIdRoute
   ApiPublicEvaluateReviewRoute: typeof ApiPublicEvaluateReviewRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/leaderboard': {
+      id: '/leaderboard'
+      path: '/leaderboard'
+      fullPath: '/leaderboard'
+      preLoaderRoute: typeof LeaderboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -87,6 +117,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LeaderboardRoute: LeaderboardRoute,
   ProductsProductIdRoute: ProductsProductIdRoute,
   ApiPublicEvaluateReviewRoute: ApiPublicEvaluateReviewRoute,
 }

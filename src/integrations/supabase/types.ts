@@ -38,6 +38,48 @@ export type Database = {
         }
         Relationships: []
       }
+      reviewers: {
+        Row: {
+          best_quality: number
+          created_at: string
+          current_streak: number
+          display_name: string
+          last_review_date: string | null
+          longest_streak: number
+          name_key: string
+          reviews_count: number
+          total_bonus: number
+          total_points: number
+          updated_at: string
+        }
+        Insert: {
+          best_quality?: number
+          created_at?: string
+          current_streak?: number
+          display_name: string
+          last_review_date?: string | null
+          longest_streak?: number
+          name_key: string
+          reviews_count?: number
+          total_bonus?: number
+          total_points?: number
+          updated_at?: string
+        }
+        Update: {
+          best_quality?: number
+          created_at?: string
+          current_streak?: number
+          display_name?: string
+          last_review_date?: string | null
+          longest_streak?: number
+          name_key?: string
+          reviews_count?: number
+          total_bonus?: number
+          total_points?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       reviews: {
         Row: {
           ai_feedback: string | null
@@ -50,6 +92,7 @@ export type Database = {
           product_id: string
           quality_score: number | null
           rating: number | null
+          reviewer_key: string | null
         }
         Insert: {
           ai_feedback?: string | null
@@ -62,6 +105,7 @@ export type Database = {
           product_id: string
           quality_score?: number | null
           rating?: number | null
+          reviewer_key?: string | null
         }
         Update: {
           ai_feedback?: string | null
@@ -74,6 +118,7 @@ export type Database = {
           product_id?: string
           quality_score?: number | null
           rating?: number | null
+          reviewer_key?: string | null
         }
         Relationships: [
           {

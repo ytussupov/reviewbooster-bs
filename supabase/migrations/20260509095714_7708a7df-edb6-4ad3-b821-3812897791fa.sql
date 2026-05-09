@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.update_reviewer_stats() FROM PUBLIC, anon, authenticated;
