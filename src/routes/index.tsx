@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Header } from "@/components/Header";
 import { AddProductDialog } from "@/components/AddProductDialog";
+import { PlayerCard } from "@/components/PlayerCard";
+import { DailyQuests } from "@/components/DailyQuests";
 import { Sparkles, Gift, Zap, MessageSquare } from "lucide-react";
 import { useSettings } from "@/lib/settings";
 
@@ -94,6 +96,14 @@ function Index() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Gamification panel */}
+      <section className="mx-auto max-w-6xl px-4 pt-10">
+        <div className="grid gap-5 lg:grid-cols-2">
+          <PlayerCard />
+          <DailyQuests />
         </div>
       </section>
 
