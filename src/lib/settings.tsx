@@ -103,6 +103,8 @@ type Ctx = {
   setCurrency: (c: Currency) => void;
   language: Language;
   setLanguage: (l: Language) => void;
+  playerName: string;
+  setPlayerName: (n: string) => void;
   t: (key: keyof typeof T) => string;
   formatBonus: (rub: number) => string;
 };
@@ -112,12 +114,15 @@ const SettingsContext = createContext<Ctx | null>(null);
 export function SettingsProvider({ children }: { children: ReactNode }) {
   const [currency, setCurrencyState] = useState<Currency>("RUB");
   const [language, setLanguageState] = useState<Language>("ru");
+  const [playerName, setPlayerNameState] = useState<string>("");
 
   useEffect(() => {
     const c = localStorage.getItem("rb_currency") as Currency | null;
     const l = localStorage.getItem("rb_language") as Language | null;
+    const p = localStorage.getItem("rb_player") || "";
     if (c && CURRENCIES[c]) setCurrencyState(c);
     if (l && LANGUAGES[l]) setLanguageState(l);
+    if (p) setPlayerNameState(p);
   }, []);
 
   const setCurrency = (c: Currency) => {
@@ -127,6 +132,10 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   const setLanguage = (l: Language) => {
     setLanguageState(l);
     localStorage.setItem("rb_language", l);
+  };
+  const setPlayerName = (n: string) => {
+    setPlayerNameState(n);
+    localStorage.setItem("rb_player", n);
   };
 
   const t = (key: keyof typeof T) => T[key]?.[language] ?? String(key);
@@ -139,7 +148,9 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <SettingsContext.Provider value={{ currency, setCurrency, language, setLanguage, t, formatBonus }}>
+    <SettingsContext.Provider
+      value={{ currency, setCurrency, language, setLanguage, playerName, setPlayerName, t, formatBonus }}
+    >
       {children}
     </SettingsContext.Provider>
   );
@@ -150,3 +161,4 @@ export function useSettings() {
   if (!ctx) throw new Error("useSettings must be used within SettingsProvider");
   return ctx;
 }
+
